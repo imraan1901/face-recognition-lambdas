@@ -6,6 +6,21 @@ import io
 import base64
 import os
 
+
+RESPONSE_200 = {
+        "isBase64Encoded": False,
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json",
+                    "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "PUT",
+                    },
+        "body": {
+            "Authenticated": False,
+            "message": "Placeholder"
+        }
+    }
+
 RDS_ENDPOINT = os.environ['RDS_ENDPOINT']
 BUCKET = os.environ['BUCKET']
 PORT = int(os.environ['PORT'])
@@ -34,10 +49,13 @@ def form_json(resp, message="Placeholder", auth=False):
 
 def lambda_handler(event, context):
     # In function since it would be cached otherwise
+    # In function since it would be cached otherwise
     RESPONSE_500 = {
         "isBase64Encoded": False,
         "statusCode": 500,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {"Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    },
         "body": {
             "Authenticated": False,
             "message": "Placeholder"
@@ -47,13 +65,14 @@ def lambda_handler(event, context):
     RESPONSE_200 = {
         "isBase64Encoded": False,
         "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {"Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    },
         "body": {
             "Authenticated": False,
             "message": "Placeholder"
         }
     }
-
     data = event['body']
     decoded_data = base64.b64decode(data)
     image_filelike = io.BytesIO(decoded_data)
